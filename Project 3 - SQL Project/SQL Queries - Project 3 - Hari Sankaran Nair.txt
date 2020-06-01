@@ -1,0 +1,106 @@
+/* Query 1 - query used for first insight*/
+
+SELECT
+  G.Name Genre,
+  G.GenreId ID,
+  SUM(IL.Unitprice * IL.Quantity) Sales_Value
+FROM InvoiceLine IL
+JOIN Track T
+  ON IL.TrackId = T.TrackId
+JOIN Genre G
+  ON T.GenreId = G.GenreId
+GROUP BY 1,
+         2
+ORDER BY 3 DESC;
+
+/* Query 2 - query used for second insight*/
+
+SELECT
+  I.BillingCountry Country,
+  SUM(IL.UnitPrice * IL.Quantity) Rock_Sales,
+  G.Name Genre
+FROM Invoice I
+JOIN InvoiceLine IL
+  ON I.InvoiceId = IL.InvoiceId
+JOIN Track T
+  ON IL.TrackId = T.TrackId
+JOIN Genre G
+  ON T.GenreId = G.GenreId
+WHERE G.Name = 'Rock'
+GROUP BY 1,
+         3
+ORDER BY 2 DESC;
+
+/* Query 3 - query used for third insight*/
+
+SELECT
+  C.FirstName,
+  C.LastName,
+  C.Country,
+  COUNT(IL.InvoiceID) Num_songs,
+  G.Name Genre
+FROM Customer C
+JOIN Invoice I
+  ON C.CustomerId = I.CustomerId
+JOIN InvoiceLine IL
+  ON I.InvoiceId = IL.InvoiceId
+JOIN Track T
+  ON IL.TrackId = T.TrackId
+JOIN Genre G
+  ON T.GenreId = G.GenreId
+WHERE G.Name = 'Rock'
+GROUP BY 1,
+         2,
+         3,
+         5
+ORDER BY 4 DESC;
+
+
+/* Query 4 - queries used for fourth insight*/
+
+/* 2 Queries were used to determine the total sales per agent and the sales of rock songs per agent*/
+
+/* Query 4a (Total Sales per Agent)*/
+
+SELECT
+  E.FirstName,
+  E.LastName,
+  SUM(IL.UnitPrice * IL.Quantity) Total_Sales
+FROM Employee E
+JOIN Customer C
+  ON E.EmployeeId = C.SupportRepId
+JOIN Invoice I
+  ON C.CustomerId = I.CustomerId
+JOIN InvoiceLine IL
+  ON I.InvoiceId = IL.InvoiceId
+JOIN Track T
+  ON IL.TrackId = T.TrackId
+JOIN Genre G
+  ON T.GenreId = G.GenreId
+GROUP BY 1,
+         2
+ORDER BY 3 DESC;
+
+/* Query 4b (Total Rock Songs Sales per Agent)*/
+
+SELECT
+  E.FirstName,
+  E.LastName,
+  SUM(IL.UnitPrice * IL.Quantity) Total_Rock_Sales
+FROM Employee E
+JOIN Customer C
+  ON E.EmployeeId = C.SupportRepId
+JOIN Invoice I
+  ON C.CustomerId = I.CustomerId
+JOIN InvoiceLine IL
+  ON I.InvoiceId = IL.InvoiceId
+JOIN Track T
+  ON IL.TrackId = T.TrackId
+JOIN Genre G
+  ON T.GenreId = G.GenreId
+WHERE G.Name = 'Rock'
+GROUP BY 1,
+         2
+ORDER BY 3 DESC;
+
+
