@@ -1,4 +1,4 @@
-## Project 1 - Working with Data
+## Project 2 - Analyze NYSE Data
 
 The project involved using Excel to model real life data from the New York Stock Exchange using a subset of a large dataset provided by Kaggle that contains historical financial data from S&P 500 companies. 
 
